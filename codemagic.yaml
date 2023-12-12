@@ -26,7 +26,7 @@ workflows:
 
    
           cd android && ./gradlew assembleRelease
-          npx docker run-android --variant=release
+          npx simpleapp run-android --variant=release
 
       - name: npm Starts
         script: |
