@@ -13,7 +13,7 @@ workflows:
           cd ios/
           pod install
           xcodebuild clean -workspace newapp.xcworkspace -scheme newapp -configuration Release
-          xcodebuild archive -workspace newapp.xcworkspace -scheme newapp -configuration Release -archivePath build/Coffee_Shop_App.xcarchive
+          xcodebuild archive -workspace newapp.xcworkspace -scheme newapp -configuration Release -archivePath build/newapp.xcarchive
           xcodebuild -exportArchive -archivePath build/newapp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath build/simpleapp/ios
           npx simpleapp run-ios --configuration=release
       - name: Set Android SDK location
