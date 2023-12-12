@@ -8,12 +8,11 @@ workflows:
       - name: Install dependencies
         script: npm install
 
-      - name: Build iOS
-        script: |
-          cd ios/
-          pod install
-          install! 'cocoapods', :warn_for_unused_master_specs_repo => false
-          npx simpleapp run-ios --configuration=release
+      # - name: Build iOS
+      #   script: |
+      #     cd ios/
+      #     pod install
+      #     npx simpleapp run-ios --configuration=release
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties" 
