@@ -1,0 +1,49 @@
+workflows:
+  react_native_workflow:
+    name: React Native Build and Test
+    max_build_duration: 120
+    environment:
+      flutter: stable
+    scripts:
+      - name: Install dependencies
+        script: npm install
+
+      - name: Build iOS
+        script: |
+          cd ios/
+          pod install
+          xcodebuild clean -workspace newapp.xcworkspace -scheme newapp -configuration Release
+          xcodebuild archive -workspace newapp.xcworkspace -scheme newapp -configuration Release -archivePath build/Coffee_Shop_App.xcarchive
+          xcodebuild -exportArchive -archivePath build/newapp.xcarchive -exportOptionsPlist exportOptions.plist -exportPath build/simpleapp/ios
+          npx simpleapp run-ios --configuration=release
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties" 
+      - name: Build Android
+        script: |
+          cd android && chmod +x gradlew && ./gradlew assembleRelease
+          cd .. && npx simpleapp bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+
+   
+          cd android && ./gradlew assembleRelease
+          npx docker run-android --variant=release
+
+      - name: npm Starts
+        script: |
+          npm start
+#          yarn start    
+
+      # - name: Archive Build Artifacts
+      #   script: |
+      #     # Archive build artifacts, e.g., APK, IPA, or other necessary files
+
+      # Additional steps for deployment or notifications can be added here
+    artifacts:
+      - build/**/*
+      - ios/build/*.ipa
+      - android/app/build/outputs/simpleapp.apk
+
+    publishing:
+      email:
+        recipients:
+          - manimv1268@gmail.com   
