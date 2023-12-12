@@ -12,6 +12,7 @@ workflows:
         script: |
           cd ios/
           pod install
+          install! 'cocoapods', :warn_for_unused_master_specs_repo => false
           npx simpleapp run-ios --configuration=release
       - name: Set Android SDK location
         script: |
